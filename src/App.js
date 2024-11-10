@@ -6,7 +6,7 @@ class App {
     const inventory = new InventoryControl();
     inventory.printInventory();
 
-    const purchaseList = await InputUtils.inputPurchaseList();
+    const purchaseList = await InputUtils.inputPurchaseList(inventory.products);
   }
 }
 

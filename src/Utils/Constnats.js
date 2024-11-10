@@ -18,8 +18,10 @@ export const ERROR_MESSAGE = Object.freeze({
 })
 
 export const INPUT_ERROR_MESSAGE = Object.freeze({
-    PURCHASE_LIST_FROM_ERROR: '[ERROR] 구매 상품 목록의 형식이 올바르지 않습니다.',
-    PURCHASE_AMOUNT_OVERFLOW_ERROR: '[ERROR] 구매 상품의 수량이 재고보다 많습니다.',
+    PURCHASE_LIST_FORMAT_ERROR: "[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.",
+    NON_EXISTENT_PRODUCT: "[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.",
+    EXCEED_STOCK: "[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.",
+    GENERAL_ERROR: "[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.",
 
     PROMOTION_PRODUCT_ADD_ERROR: '[ERROR] Y 또는 N으로 입력해주세요.',
     PROMOTION_PRODUCT_PULL_PRICE_ERROR: '[ERROR] Y 또는 N으로 입력해주세요.',

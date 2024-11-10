@@ -3,14 +3,14 @@ import { INPUT_MESSAGE, OUTPUT_MESSAGE } from './Constnats.js';
 import { InputValidator } from '../Validator/IOvalidator.js';
 
 export class InputUtils {
-    static async inputPurchaseList() {
+    static async inputPurchaseList(inventoryList) {
         try {
             const purchase = await Console.readLineAsync(INPUT_MESSAGE.PURCHASE_INFORMATION);
             const purchaseList = this.getPurchaseList(purchase);
-            InputValidator.purchaseListValidator(purchaseList);
+            InputValidator.validatePurchaseList(purchaseList, inventoryList);
         } catch (error) {
             this.printErrorMessage(error.message);
-            return this.inputPurchaseList()
+            return this.inputPurchaseList(inventoryList);
         }
     }
 
