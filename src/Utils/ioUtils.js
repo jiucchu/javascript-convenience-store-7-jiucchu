@@ -8,6 +8,8 @@ export class InputUtils {
             const purchase = await Console.readLineAsync(INPUT_MESSAGE.PURCHASE_INFORMATION);
             const purchaseList = this.getPurchaseList(purchase);
             InputValidator.validatePurchaseList(purchaseList, inventoryList);
+
+            return purchaseList
         } catch (error) {
             this.printErrorMessage(error.message);
             return this.inputPurchaseList(inventoryList);
@@ -20,11 +22,38 @@ export class InputUtils {
             const match = purchaseProduct.match(/\[(.+)-(\d+)\]/);
             if (match) {
                 const [, name, quantity] = match;
-                return { name: name, quantity: quantity };
+                return { name: name, quantity: Number(quantity) };
             }
             return null;
         })
     }
+
+    static async inputPurchaseMorePromotionProduct(name) {
+        try {
+            const purchaseMorePromotionProduct = await Console.readLineAsync(`\n현재 ${name}은(는) 1개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)\n`);
+            InputValidator.validatePurchaseMorePromotionProduct(purchaseMorePromotionProduct);
+
+            return purchaseMorePromotionProduct
+        } catch (error) {
+            this.printErrorMessage(error.message);
+            return this.inputPurchaseMorePromotionProduct(name);
+        }
+    }
+
+    static async inputPurchasePromotionProductAtFullPrimce(name, quantity) {
+        try {
+            const purchasePromotionProductAtFullPrimce = await Console.readLineAsync(`\n현재 ${name} ${quantity}개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)`);
+            InputValidator.validatePurchasePromotionProductAtFullPrimce(purchasePromotionProductAtFullPrimce);
+
+            return purchasePromotionProductAtFullPrimce
+        } catch (error) {
+            this.printErrorMessage(error.message);
+            return this.inputPurchasePromotionProductAtFullPrimce(name, quantity);
+        }
+    }
+
+
+
 
     static printErrorMessage(errorMessage) {
         Console.print(errorMessage)

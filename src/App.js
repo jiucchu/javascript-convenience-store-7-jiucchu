@@ -1,3 +1,5 @@
+import { Console } from "@woowacourse/mission-utils";
+import ApplyPromotion from "./Module/ApplyPromotion.js";
 import InventoryControl from "./Module/InventoryControl.js";
 import { InputUtils } from "./Utils/ioUtils.js";
 
@@ -7,6 +9,9 @@ class App {
     inventory.printInventory();
 
     const purchaseList = await InputUtils.inputPurchaseList(inventory.products);
+
+    const applyPromotion = new ApplyPromotion(inventory.products, purchaseList);
+    applyPromotion.checkPromotion();
   }
 }
 

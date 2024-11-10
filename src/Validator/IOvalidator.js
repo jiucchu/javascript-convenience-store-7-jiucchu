@@ -41,5 +41,19 @@ export class InputValidator {
             throw new Error(INPUT_ERROR_MESSAGE.EXCEED_STOCK);
         }
     }
+
+    static validatePurchaseMorePromotionProduct(purchaseMorePromotionProduct) {
+        const answer = ['y', 'Y', 'n', 'N'];
+        if (!(answer.includes(purchaseMorePromotionProduct))) {
+            throw new Error(INPUT_ERROR_MESSAGE.PROMOTION_PRODUCT_ADD_ERROR);
+        }
+    }
+
+    static validatePurchasePromotionProductAtFullPrimce(purchasePromotionProductAtFullPrimce) {
+        const answer = [y, Y, n, N];
+        if (!(answer.include(purchasePromotionProductAtFullPrimce))) {
+            throw new Error(INPUT_ERROR_MESSAGE.PROMOTION_PRODUCT_PULL_PRICE_ERROR);
+        }
+    }
 }
 
