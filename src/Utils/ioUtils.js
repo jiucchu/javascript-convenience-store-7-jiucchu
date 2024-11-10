@@ -38,16 +38,20 @@ export class OutputUtils {
     }
 
     static printInventory(product) {
-        let [name, price, quantity, promotion] = [product.getName(), product.getPrice(), product.getQuantity(), product.getPromotion()];
-
-        if (product.getQuantity() != '재고 없음') {
-            quantity = `${quantity}개`;
-        }
-
-        Console.print(`- ${name}, ${price.toLocaleString()}원 ${quantity} ${promotion}`);
+        Console.print(this.getInventoryString(product));
     }
 
     static printPurchaseInformation() {
         Console.print(OUTPUT_MESSAGE.PURCHASE_INFORMATION());
+    }
+
+    static getInventoryString(product) {
+        const [name, price, quantity, promotion] = [product.getName(), product.getPrice(), product.getQuantity(), product.getPromotion()];
+
+        if (product.getQuantity() == '0') {
+            return `- ${name}, ${price.toLocaleString()}원 재고 없음`
+        }
+
+        return `- ${name}, ${price.toLocaleString()}원 ${quantity} ${promotion}`
     }
 }
