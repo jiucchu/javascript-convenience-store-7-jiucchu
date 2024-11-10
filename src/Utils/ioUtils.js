@@ -1,7 +1,35 @@
 import { Console } from '@woowacourse/mission-utils';
-import { OUTPUT_MESSAGE } from './Constnats.js';
+import { INPUT_MESSAGE, OUTPUT_MESSAGE } from './Constnats.js';
+import { InputValidator } from '../Validator/IOvalidator.js';
 
 export class InputUtils {
+    static async inputPurchaseList() {
+        try {
+            const purchase = await Console.readLineAsync(INPUT_MESSAGE.PURCHASE_INFORMATION);
+            const purchaseList = this.getPurchaseList(purchase);
+            InputValidator.purchaseListValidator(purchaseList);
+        } catch (error) {
+            this.printErrorMessage(error.message);
+            return this.inputPurchaseList()
+        }
+    }
+
+    static getPurchaseList(purchase) {
+        const purchaseProducts = purchase.split(',');
+        return purchaseProducts.map(purchaseProduct => {
+            const match = purchaseProduct.match(/\[(.+)-(\d+)\]/);
+            if (match) {
+                const [, name, quantity] = match;
+                return { name: name, quantity: quantity };
+            }
+            return null;
+        })
+    }
+
+    static printErrorMessage(errorMessage) {
+        Console.print(errorMessage)
+    }
+
 }
 
 export class OutputUtils {
@@ -17,5 +45,9 @@ export class OutputUtils {
         }
 
         Console.print(`- ${name}, ${price.toLocaleString()}원 ${quantity} ${promotion}`);
+    }
+
+    static printPurchaseInformation() {
+        Console.print(OUTPUT_MESSAGE.PURCHASE_INFORMATION());
     }
 }
