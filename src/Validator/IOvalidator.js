@@ -49,10 +49,17 @@ export class InputValidator {
         }
     }
 
-    static validatePurchasePromotionProductAtFullPrimce(purchasePromotionProductAtFullPrimce) {
+    static validatePurchasePromotionProductAtFullPrice(purchasePromotionProductAtFullPrice) {
         const answer = ['y', 'Y', 'n', 'N'];
-        if (!(answer.includes(purchasePromotionProductAtFullPrimce))) {
+        if (!(answer.includes(purchasePromotionProductAtFullPrice))) {
             throw new Error(INPUT_ERROR_MESSAGE.PROMOTION_PRODUCT_PULL_PRICE_ERROR);
+        }
+    }
+
+    static validateMembershipApply(membershipApply) {
+        const answer = ['y', 'Y', 'n', 'N'];
+        if (!(answer.includes(membershipApply))) {
+            throw new Error(INPUT_ERROR_MESSAGE.MEMBERSHIP_APPLY);
         }
     }
 }

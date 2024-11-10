@@ -27,6 +27,7 @@ export const INPUT_ERROR_MESSAGE = Object.freeze({
 
     MEMBERSHIP_DISCOUNT_ERROR: '[ERROR] Y 또는 N으로 입력해주세요.',
     ADDITIONAL_PURCHASE_ERROR: '[ERROR] Y 또는 N으로 입력해주세요.',
+    MEMBERSHIP_APPLY: '[ERROR] Y 또는 N으로 입력해주세요.',
 })
 
 export const CONSTANTS = Object.freeze({

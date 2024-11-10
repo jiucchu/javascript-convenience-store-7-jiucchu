@@ -1,5 +1,5 @@
 import { OutputUtils } from '../Utils/ioUtils.js';
-import { Console } from '@woowacourse/mission-utils';
+import { Console, DateTimes } from '@woowacourse/mission-utils';
 import Promotion from './Promotion.js';
 import { InputUtils } from '../Utils/ioUtils.js';
 import fs from 'fs';
@@ -67,7 +67,7 @@ export default class ApplyPromotion {
     checkPromotionDate(promotion) {
         const start = new Date(promotion.getStartDate());
         const end = new Date(promotion.getEndDate());
-        const today = new Date(this.today);
+        const today = new Date(DateTimes.now());
 
         return today >= start && today <= end
     }
@@ -90,7 +90,7 @@ export default class ApplyPromotion {
     // 프로모션 적용
     async applyPromotion(product, promotionInventory, promotion) {
         if (((product.quantity % (promotion.getBuy() + 1)) === 0 && product.quantity <= promotionInventory.getQuantity()) || product.quantity === promotionInventory.getQuantity()) {
-            this.promotionApplyProducst.push({ name: product.name, quantity: Math.trunc(product.quantity / (promotion.getBuy() + 1)) * (promotion.getBuy() + 1) });
+            this.promotionApplyProducst.push({ name: product.name, quantity: Math.trunc(product.quantity / (promotion.getBuy() + 1)) * (promotion.getBuy() + 1), applyQuantity: Math.trunc(product.quantity / (promotion.getBuy() + 1)) });
         }
         if ((product.quantity % (promotion.getBuy() + 1)) === promotion.getBuy() && (product.quantity + 1) <= promotionInventory.getQuantity()) {
             await this.promotionInventoryLack(product.name, product.quantity, promotion.getBuy());
@@ -100,38 +100,42 @@ export default class ApplyPromotion {
         }
     }
 
+
+
     async promotionInventoryLack(name, productQuantity, promotionQuantity) {
         const answer = await InputUtils.inputPurchaseMorePromotionProduct(name);
         if (answer === 'y' | answer === 'Y') {
-            this.promotionApplyProducst.push({ name: name, quantity: (productQuantity + 1) });
+            this.promotionApplyProducst.push({ name: name, quantity: (productQuantity + 1), applyQuantity: Math.trunc((productQuantity + 1) / (promotionQuantity + 1)) });
+            this.handleReducedPurchase(name, 1);
+
         }
         if (answer === 'n' | answer === 'N') {
-            this.promotionApplyProducst.push({ name: name, quantity: Math.trunc((productQuantity) / (promotionQuantity + 1)) * (promotionQuantity + 1) });
+            this.promotionApplyProducst.push({ name: name, quantity: Math.trunc((productQuantity) / (promotionQuantity + 1)) * (promotionQuantity + 1), applyQuantity: Math.trunc((productQuantity) / (promotionQuantity + 1)) });
         }
     }
 
     async promotionInventoryExeed(name, productQuantity, promotionQuantity, InventoryQuantity) {
-        const exceedQuantity = productQuantity - Math.trunc(InventoryQuantity / (promotionQuantity + 1)) * (promotionQuantity + 1);
-        const answer = await InputUtils.inputPurchasePromotionProductAtFullPrimce(name, exceedQuantity);
+        const exceedQuantity = (productQuantity - Math.trunc(InventoryQuantity / (promotionQuantity + 1)) * (promotionQuantity + 1));
+        const answer = await InputUtils.inputPurchasePromotionProductAtFullPrice(name, exceedQuantity);
         if (answer === 'y' | answer === 'Y') {
-            this.promotionApplyProducst.push({ name: name, quantity: Math.trunc(InventoryQuantity / (promotionQuantity + 1)) * (promotionQuantity + 1) });
+            this.promotionApplyProducst.push({ name: name, quantity: Math.trunc(InventoryQuantity / (promotionQuantity + 1)) * (promotionQuantity + 1), applyQuantity: Math.trunc(InventoryQuantity / (promotionQuantity + 1)) });
         }
         if (answer === 'n' | answer === 'N') {
-            this.promotionApplyProducst.push({ name: name, quantity: Math.trunc(InventoryQuantity / (promotionQuantity + 1)) * (promotionQuantity + 1) });
-            this.handleReducedPurchase(name, exceedQuantity);
+            this.promotionApplyProducst.push({ name: name, quantity: Math.trunc(InventoryQuantity / (promotionQuantity + 1)) * (promotionQuantity + 1), applyQuantity: Math.trunc(InventoryQuantity / (promotionQuantity + 1)) });
+            this.handleReducedPurchase(name, -exceedQuantity);
         }
     }
 
-    async handleReducedPurchase(name, exceedQuantity) {
-        await this.updatePurchaseList(name, exceedQuantity);
+    async handleReducedPurchase(name, changedQuantity) {
+        await this.updatePurchaseList(name, changedQuantity);
     }
 
-    async updatePurchaseList(name, exceedQuantity) {
+    async updatePurchaseList(name, changedQuantity) {
         this.purchaseList = this.purchaseList.map(product => {
             if (product.name === name) {
                 return {
                     name: product.name,
-                    quantity: product.quantity - exceedQuantity,
+                    quantity: product.quantity + changedQuantity,
                 };
             }
             return product;
@@ -149,17 +153,29 @@ export default class ApplyPromotion {
 
     getPromotionAmount() {
         let totalDiscount = 0;
+        let totalApplyAmount = 0;
         this.promotionApplyProducst.forEach(promotionProduct => {
             const matchingInventory = this.findMatchingInventory(promotionProduct.name);
-            const promotion = this.findPromotion(matchingInventory.promotion);
 
-            if (matchingInventory && promotion) {
-                const discountedQuantity = this.calculateDiscountedQuantity(promotionProduct.quantity, promotion.buy);
-                totalDiscount += matchingInventory.price * discountedQuantity;
+            if (matchingInventory) {
+                totalDiscount += matchingInventory.price * promotionProduct.applyQuantity;
             }
         });
 
         return totalDiscount;
+    }
+
+    getTotalPromotionAmount() {
+        let totalApplyAmount = 0;
+        this.promotionApplyProducst.forEach(promotionProduct => {
+            const matchingInventory = this.findMatchingInventory(promotionProduct.name);
+
+            if (matchingInventory) {
+                totalApplyAmount += matchingInventory.price * promotionProduct.quantity;
+            }
+        });
+
+        return totalApplyAmount;
     }
 
     findMatchingInventory(productName) {

@@ -40,15 +40,27 @@ export class InputUtils {
         }
     }
 
-    static async inputPurchasePromotionProductAtFullPrimce(name, quantity) {
+    static async inputPurchasePromotionProductAtFullPrice(name, quantity) {
         try {
-            const purchasePromotionProductAtFullPrimce = await Console.readLineAsync(`\n현재 ${name} ${quantity}개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)\n`);
-            InputValidator.validatePurchasePromotionProductAtFullPrimce(purchasePromotionProductAtFullPrimce);
+            const purchasePromotionProductAtFullPrice = await Console.readLineAsync(`\n현재 ${name} ${quantity}개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)\n`);
+            InputValidator.validatePurchasePromotionProductAtFullPrice(purchasePromotionProductAtFullPrice);
 
-            return purchasePromotionProductAtFullPrimce
+            return purchasePromotionProductAtFullPrice
         } catch (error) {
             this.printErrorMessage(error.message);
-            return this.inputPurchasePromotionProductAtFullPrimce(name, quantity);
+            return this.inputPurchasePromotionProductAtFullPrice(name, quantity);
+        }
+    }
+
+    static async InputMemershipApply() {
+        try {
+            const membershipApply = await Console.readLineAsync(`\n멤버십 할인을 받으시겠습니까? (Y/N)\n`);
+            InputValidator.validateMembershipApply(membershipApply);
+
+            return purchaseMorePromotionProduct
+        } catch (error) {
+            this.printErrorMessage(error.message);
+            return this.InputMemershipApply();
         }
     }
 
@@ -81,6 +93,6 @@ export class OutputUtils {
             return `- ${name}, ${price.toLocaleString()}원 재고 없음`
         }
 
-        return `- ${name}, ${price.toLocaleString()}원 ${quantity} ${promotion}`
+        return `- ${name}, ${price.toLocaleString()}원 ${quantity}개 ${promotion}`
     }
 }
