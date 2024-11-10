@@ -50,8 +50,8 @@ export class InputValidator {
     }
 
     static validatePurchasePromotionProductAtFullPrimce(purchasePromotionProductAtFullPrimce) {
-        const answer = [y, Y, n, N];
-        if (!(answer.include(purchasePromotionProductAtFullPrimce))) {
+        const answer = ['y', 'Y', 'n', 'N'];
+        if (!(answer.includes(purchasePromotionProductAtFullPrimce))) {
             throw new Error(INPUT_ERROR_MESSAGE.PROMOTION_PRODUCT_PULL_PRICE_ERROR);
         }
     }
