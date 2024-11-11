@@ -63,7 +63,7 @@ export default class InventoryControl {
     updateNonPromotionInventory(purchaseList) {
         purchaseList.forEach(purchase => {
             const matchingProduct = this.products.find(product => product.getName() === purchase.name && (product.getPromotion() == ''));
-            const remainingQuantity = matchingProduct.quantity - purchase.quantity;
+            const remainingQuantity = matchingProduct.getQuantity() - purchase.quantity;
 
             matchingProduct.updateQuantity(remainingQuantity)
         });
@@ -87,6 +87,7 @@ export default class InventoryControl {
             this.updatePromotionInventory(promotionList);
         }
         const nonPromotionList = this.getNonPromotionList(purchaseList, promotionList);
+
         if (nonPromotionList.length !== 0) {
             this.updateNonPromotionInventory(nonPromotionList);
         }
@@ -96,5 +97,7 @@ export default class InventoryControl {
     findMatchingInventory(productName) {
         return this.inventoryList.find(product => product.name === productName);
     }
+
+
 
 }

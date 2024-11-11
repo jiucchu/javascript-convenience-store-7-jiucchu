@@ -19,15 +19,15 @@ describe("프로모션 테스트", () => {
 
     test("프로모션 해당 상품을 1개 부족하게 입력 시, 추가 여부 입력 후 적용. - 추가 O", async () => {
         await run({
-            inputs: ["[오렌지주스-7]", "Y", "N", "N"],
-            expectedIgnoringWhiteSpaces: ["오렌지주스8", "내실돈7,200"],
+            inputs: ["[감자칩-3]", "Y", "N", "N"],
+            expectedIgnoringWhiteSpaces: ["감자칩4", "내실돈3,000"],
         });
     });
 
     test("프로모션 해당 상품을 1개 부족하게 입력 시, 추가 여부 입력 후 적용. - 추가 X", async () => {
         await run({
-            inputs: ["[오렌지주스-7]", "N", "N", "N"],
-            expectedIgnoringWhiteSpaces: ["오렌지주스7", "내실돈7,200"],
+            inputs: ["[감자칩-3]", "N", "N", "N"],
+            expectedIgnoringWhiteSpaces: ["감자칩3", "내실돈3,000"],
         });
     });
 
