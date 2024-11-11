@@ -105,7 +105,7 @@ export class OutputUtils {
         const [name, price, quantity, promotion] = [product.getName(), product.getPrice(), product.getQuantity(), product.getPromotion()];
 
         if (product.getQuantity() == '0') {
-            return `- ${name} ${price.toLocaleString()}원 재고 없음`
+            return `- ${name} ${price.toLocaleString()}원 재고 없음 ${promotion}`
         }
 
         return `- ${name} ${price.toLocaleString()}원 ${quantity}개 ${promotion}`

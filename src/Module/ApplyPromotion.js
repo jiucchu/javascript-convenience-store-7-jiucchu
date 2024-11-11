@@ -95,11 +95,19 @@ export default class ApplyPromotion {
         if ((product.quantity % (promotion.getBuy() + 1)) === promotion.getBuy() && (product.quantity + 1) <= promotionInventory.getQuantity()) {
             await this.promotionInventoryLack(product.name, product.quantity, promotion.getBuy());
         }
-        if ((product.quantity / (promotion.getBuy() + 1)) >= 1 && (product.quantity > promotionInventory.getQuantity())) {
+        if ((product.quantity >= (promotion.getBuy() + 1)) && (product.quantity > promotionInventory.getQuantity())) {
             await this.promotionInventoryExeed(product.name, product.quantity, promotion.getBuy(), promotionInventory.getQuantity());
         }
     }
 
+    async promotionInventoryEnough(name, productQuantity, promotionQuantity) {
+        this.promotionApplyProducst.push({
+            name: product.name,
+            quantity: Math.trunc(product.quantity / (promotion.getBuy() + 1)) * (promotion.getBuy() + 1),
+            applyQuantity: Math.trunc(product.quantity / (promotion.getBuy() + 1))
+        });
+
+    }
 
 
     async promotionInventoryLack(name, productQuantity, promotionQuantity) {
