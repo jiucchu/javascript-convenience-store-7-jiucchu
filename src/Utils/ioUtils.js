@@ -136,8 +136,8 @@ export class OutputUtils {
     static printDiscountList(totalAmounts) {
         Console.print("=====================================");
         Console.print(this.formatLine("총구매액", totalAmounts.totalQuantity, totalAmounts.totalPrice.toLocaleString()));
-        Console.print(this.formatLine("행사할인", "", `-${totalAmounts.promotionDiscount.toLocaleString()}`));
-        Console.print(this.formatLine("멤버십할인", "", `-${totalAmounts.membershipDiscount.toLocaleString()}`));
+        Console.print(this.formatLine("행사할인", "", this.getDiscountString(totalAmounts.promotionDiscount)));
+        Console.print(this.formatLine("멤버십할인", "", this.getDiscountString(totalAmounts.membershipDiscount)));
         Console.print(this.formatLine("내실돈", "", totalAmounts.finalAmount.toLocaleString()));
         Console.print("=====================================");
     }
@@ -153,6 +153,14 @@ export class OutputUtils {
             quantity.toString().padStart(quantityWidth) +
             price.toString().padStart(priceWidth)
         );
+    }
+
+    static getDiscountString(discountAmount) {
+        if (discountAmount === 0) {
+            return `${discountAmount.toLocaleString()}`
+        }
+
+        return `-${discountAmount.toLocaleString()}`
     }
 }
 
