@@ -8,23 +8,26 @@ export default class POS {
     constructor(inventory) {
         this.inventory = inventory;
         this.purchaseList = [];
+        this.promotionList = [];
         this.totalAmounts = { totalQuantity: 0, totalPrice: 0, promotionDiscount: 0, membershipDiscount: 0, finalAmount: 0 }
     }
 
     async run() {
-        this.inventory.printInventory();
-        this.reset();
-        this.purchaseList = await InputUtils.inputPurchaseList(this.inventory.products);
+        await this.setPos();
 
         const promotionApplyProducst = await this.applyPromotion();
         this.purchaseProducts();
         await this.applyMembership();
 
-
-
         this.inventory.updateInventory(this.purchaseList, promotionApplyProducst);
-        this.printReceipt();
+        this.printReceipt(this.purchaseList, this.promotionList, this.totalAmounts);
         this.checkMorePurchase();
+    }
+
+    async setPos() {
+        this.inventory.printInventory();
+        this.reset();
+        this.purchaseList = await InputUtils.inputPurchaseList(this.inventory.products);
     }
 
     reset() {
@@ -41,6 +44,7 @@ export default class POS {
     }
 
     printReceipt(purchaseList, promotionList, totalAmounts) {
+        this.getPayment();
         OutputUtils.printReceipt(purchaseList, promotionList, totalAmounts);
     }
 
@@ -50,6 +54,8 @@ export default class POS {
 
         this.purchaseList = applyPromotion.getPurchaseList();
         this.totalAmounts.promotionDiscount = applyPromotion.getTotalPromotionAmount();
+        this.promotionList = applyPromotion.getPromotionApplyList();
+
         return applyPromotion.getPromotionApplyList();
     }
 
@@ -66,6 +72,10 @@ export default class POS {
         const membership = new Membership(this.totalAmounts.totalPrice, discountedAmount);
 
         this.totalAmounts.membershipDiscount = await membership.checkMembership();
+    }
+
+    getPayment() {
+        this.totalAmounts.finalAmount = this.totalAmounts.totalPrice - this.totalAmounts.promotionDiscount - this.totalAmounts.membershipDiscount
     }
 
 } 

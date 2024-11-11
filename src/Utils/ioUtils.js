@@ -106,7 +106,7 @@ export class OutputUtils {
         return `- ${name} ${price.toLocaleString()}원 ${quantity}개 ${promotion}`
     }
 
-    static printReceipt(purchaseList, promotionList, totalAmount) {
+    static printReceipt(purchaseList, promotionList, totalAmounts) {
         Console.print('==============W 편의점================');
         this.printPurcahseList(purchaseList);
         this.printPromotionList(promotionList);
@@ -114,9 +114,9 @@ export class OutputUtils {
     }
 
     static printPurcahseList(purchaseList) {
-        Console.print(formatLine("상품명", "수량", "금액"));
+        Console.print(this.formatLine("상품명", "수량", "금액"));
         purchaseList.forEach(purchase => {
-            Console.print(formatLine(purchase.name, purchase.quantity, purchase.totalPrice.toLocaleString()));
+            Console.print(this.formatLine(purchase.name, purchase.quantity, purchase.total.toLocaleString()));
         })
 
     }
@@ -124,24 +124,24 @@ export class OutputUtils {
     static printPromotionList(promotionList) {
         Console.print('=============증	    정===============');
         promotionList.forEach(item => {
-            Console.print(formatLine(item.name, item.quantity));
+            Console.print(this.formatLine(item.name, item.applyQuantity));
         });
     }
 
-    static printDiscountList() {
-        Console.print("====================================");
-        Console.print(formatLine("총구매액", totalAmount.totalQuantity, totalAmount.totalPrice.toLocaleString()));
-        Console.print(formatLine("행사할인", "", `-${totalAmount.promotionDiscount.toLocaleString()}`));
-        Console.print(formatLine("멤버십할인", "", `-${totalAmount.membershipDiscount.toLocaleString()}`));
-        Console.print(formatLine("내실돈", "", totalAmount.finalAmount.toLocaleString()));
-        Console.print("====================================");
+    static printDiscountList(totalAmounts) {
+        Console.print("=====================================");
+        Console.print(this.formatLine("총구매액", totalAmounts.totalQuantity, totalAmounts.totalPrice.toLocaleString()));
+        Console.print(this.formatLine("행사할인", "", `-${totalAmounts.promotionDiscount.toLocaleString()}`));
+        Console.print(this.formatLine("멤버십할인", "", `-${totalAmounts.membershipDiscount.toLocaleString()}`));
+        Console.print(this.formatLine("내실돈", "", totalAmounts.finalAmount.toLocaleString()));
+        Console.print("=====================================");
     }
 
 
     static formatLine(name, quantity = "", price = "") {
         const nameWidth = 10;
         const quantityWidth = 6;
-        const priceWidth = 10;
+        const priceWidth = 15;
 
         return (
             name.padEnd(nameWidth) +
