@@ -4,15 +4,16 @@ import { InputUtils } from '../Utils/ioUtils.js';
 
 export default class Membership {
 
-    constructor(totalPurcahseAmount, discountedAmount) {
+    constructor(totalPurcahseAmount, totalPromotionAmount) {
         this.totalPurcahseAmount = totalPurcahseAmount;
-        this.discountedAmount = discountedAmount;
+        this.totalPromotionAmount = totalPromotionAmount;
     }
 
     async checkMembership() {
         const answer = await InputUtils.InputMemershipApply();
         if (answer === 'y' | answer === 'Y') {
-            return this.getMembershipDiscount()
+            return this.getMembershipDiscount();
+
         }
 
         return 0

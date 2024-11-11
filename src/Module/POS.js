@@ -53,7 +53,7 @@ export default class POS {
         await applyPromotion.checkPromotion();
 
         this.purchaseList = applyPromotion.getPurchaseList();
-        this.totalAmounts.promotionDiscount = applyPromotion.getTotalPromotionAmount();
+        this.totalAmounts.promotionDiscount = applyPromotion.getPromotionAmount();
         this.promotionList = applyPromotion.getPromotionApplyList();
 
         return applyPromotion.getPromotionApplyList();
@@ -68,8 +68,7 @@ export default class POS {
     }
 
     async applyMembership() {
-        let discountedAmount = this.totalAmounts.totalPrice - this.totalAmounts.promotionDiscount;
-        const membership = new Membership(this.totalAmounts.totalPrice, discountedAmount);
+        const membership = new Membership(this.totalAmounts.totalPrice, this.totalAmounts.promotionDiscount);
 
         this.totalAmounts.membershipDiscount = await membership.checkMembership();
     }

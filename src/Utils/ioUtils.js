@@ -4,15 +4,16 @@ import { InputValidator } from '../Validator/IOvalidator.js';
 
 export class InputUtils {
     static async inputPurchaseList(inventoryList) {
-        try {
-            const purchase = await Console.readLineAsync(INPUT_MESSAGE.PURCHASE_INFORMATION);
-            const purchaseList = this.getPurchaseList(purchase);
-            InputValidator.validatePurchaseList(purchaseList, inventoryList);
+        while (1) {
+            try {
+                const purchase = await Console.readLineAsync(INPUT_MESSAGE.PURCHASE_INFORMATION);
+                const purchaseList = this.getPurchaseList(purchase);
+                InputValidator.validatePurchaseList(purchaseList, inventoryList);
 
-            return purchaseList
-        } catch (error) {
-            this.printErrorMessage(error.message);
-            return this.inputPurchaseList(inventoryList);
+                return purchaseList
+            } catch (error) {
+                this.printErrorMessage(error.message);
+            }
         }
     }
 
@@ -29,50 +30,54 @@ export class InputUtils {
     }
 
     static async inputPurchaseMorePromotionProduct(name) {
-        try {
-            const purchaseMorePromotionProduct = await Console.readLineAsync(`\n현재 ${name}은(는) 1개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)\n`);
-            InputValidator.validatePurchaseMorePromotionProduct(purchaseMorePromotionProduct);
+        while (1) {
+            try {
+                const purchaseMorePromotionProduct = await Console.readLineAsync(`\n현재 ${name}은(는) 1개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)\n`);
+                InputValidator.validatePurchaseMorePromotionProduct(purchaseMorePromotionProduct);
 
-            return purchaseMorePromotionProduct
-        } catch (error) {
-            this.printErrorMessage(error.message);
-            return this.inputPurchaseMorePromotionProduct(name);
+                return purchaseMorePromotionProduct
+            } catch (error) {
+                this.printErrorMessage(error.message);
+            }
         }
     }
 
     static async inputPurchasePromotionProductAtFullPrice(name, quantity) {
-        try {
-            const purchasePromotionProductAtFullPrice = await Console.readLineAsync(`\n현재 ${name} ${quantity}개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)\n`);
-            InputValidator.validatePurchasePromotionProductAtFullPrice(purchasePromotionProductAtFullPrice);
+        while (1) {
+            try {
+                const purchasePromotionProductAtFullPrice = await Console.readLineAsync(`\n현재 ${name} ${quantity}개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)\n`);
+                InputValidator.validatePurchasePromotionProductAtFullPrice(purchasePromotionProductAtFullPrice);
 
-            return purchasePromotionProductAtFullPrice
-        } catch (error) {
-            this.printErrorMessage(error.message);
-            return this.inputPurchasePromotionProductAtFullPrice(name, quantity);
+                return purchasePromotionProductAtFullPrice
+            } catch (error) {
+                this.printErrorMessage(error.message);
+            }
         }
     }
 
     static async InputMemershipApply() {
-        try {
-            const membershipApply = await Console.readLineAsync(`\n멤버십 할인을 받으시겠습니까? (Y/N)\n`);
-            InputValidator.validateMembershipApply(membershipApply);
+        while (1) {
+            try {
+                const membershipApply = await Console.readLineAsync(`\n멤버십 할인을 받으시겠습니까? (Y/N)\n`);
+                InputValidator.validateMembershipApply(membershipApply);
 
-            return membershipApply
-        } catch (error) {
-            this.printErrorMessage(error.message);
-            return this.InputMemershipApply();
+                return membershipApply
+            } catch (error) {
+                this.printErrorMessage(error.message);
+            }
         }
     }
 
     static async inputMorePurchase() {
-        try {
-            const morePurchaseApply = await Console.readLineAsync(`\n감사합니다. 구매하고 싶은 다른 상품이 있나요? (Y/N)\n`);
-            InputValidator.validateInputMorePurchase(morePurchaseApply);
+        while (1) {
+            try {
+                const morePurchaseApply = await Console.readLineAsync(`\n감사합니다. 구매하고 싶은 다른 상품이 있나요? (Y/N)\n`);
+                InputValidator.validateInputMorePurchase(morePurchaseApply);
 
-            return morePurchaseApply
-        } catch (error) {
-            this.printErrorMessage(error.message);
-            return this.inputMorePurchase();
+                return morePurchaseApply
+            } catch (error) {
+                this.printErrorMessage(error.message);
+            }
         }
     }
 
@@ -150,3 +155,4 @@ export class OutputUtils {
         );
     }
 }
+

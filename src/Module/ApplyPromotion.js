@@ -153,7 +153,6 @@ export default class ApplyPromotion {
 
     getPromotionAmount() {
         let totalDiscount = 0;
-        let totalApplyAmount = 0;
         this.promotionApplyProducst.forEach(promotionProduct => {
             const matchingInventory = this.findMatchingInventory(promotionProduct.name);
 
@@ -176,10 +175,6 @@ export default class ApplyPromotion {
         });
 
         return totalApplyAmount;
-    }
-
-    getNotApplyPromotionList() {
-
     }
 
     findMatchingInventory(productName) {
