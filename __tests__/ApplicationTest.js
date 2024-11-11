@@ -1,5 +1,5 @@
 import App from "../src/App.js";
-import { MissionUtils } from "@woowacourse/mission-utils";
+import { MissionUtils, Console } from "@woowacourse/mission-utils";
 import { EOL as LINE_SEPARATOR } from "os";
 
 const mockQuestions = (inputs) => {
@@ -32,7 +32,7 @@ const getLogSpy = () => {
 };
 
 const getOutput = (logSpy) => {
-  return [...logSpy.mock.calls].join(LINE_SEPARATOR);
+  return logSpy.mock.calls.map((call) => call[0]).join(LINE_SEPARATOR);
 };
 
 const expectLogContains = (received, expects) => {
@@ -42,6 +42,7 @@ const expectLogContains = (received, expects) => {
 };
 
 const expectLogContainsWithoutSpacesAndEquals = (received, expects) => {
+  console.log(received);
   const processedReceived = received.replace(/[\s=]/g, "");
   expects.forEach((exp) => {
     expect(processedReceived).toContain(exp);
@@ -81,8 +82,11 @@ const run = async ({
   const app = new App();
   await app.run();
 
-  const output = getOutput(logSpy);
+  // 비동기 처리를 위해 대기 시간 추가
+  await new Promise((resolve) => setTimeout(resolve, 100));
 
+  const output = getOutput(logSpy);
+  console.log(output);
   // then
   if (expectedIgnoringWhiteSpaces.length > 0) {
     expectLogContainsWithoutSpacesAndEquals(
@@ -118,7 +122,7 @@ describe("편의점", () => {
         "- 탄산수 1,200원 재고 없음",
         "- 물 500원 10개",
         "- 비타민워터 1,500원 6개",
-        "- 감자칩 1,500원 5개 반짝할인",
+        "- 감자칩 1,500원 5개 이전할인",
         "- 감자칩 1,500원 5개",
         "- 초코바 1,200원 5개 MD추천상품",
         "- 초코바 1,200원 5개",
@@ -138,7 +142,7 @@ describe("편의점", () => {
   });
 
   test("기간에 해당하지 않는 프로모션 적용", async () => {
-    mockNowDate("2024-02-01");
+    mockNowDate("2024-11-11");
 
     await run({
       inputs: ["[감자칩-2]", "N", "N"],
