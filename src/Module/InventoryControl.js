@@ -51,21 +51,21 @@ export default class InventoryControl {
         );
     }
 
-    updatePromotionInventory(purchaseList) {
-        purchaseList.forEach(purchase => {
-            const matchingProduct = this.products.find(product => product.getName() === purchase.name && (product.getName() != ''));
+    updatePromotionInventory(promotionList) {
+        promotionList.forEach(purchase => {
+            const matchingProduct = this.products.find(product => product.getName() === purchase.name && (product.getPromotion() != ''));
             const remainingQuantity = matchingProduct.getQuantity() - purchase.quantity;
 
-            matchingProduct.quantity = remainingQuantity;
+            matchingProduct.updateQuantity(remainingQuantity);
         });
     }
 
     updateNonPromotionInventory(purchaseList) {
         purchaseList.forEach(purchase => {
-            const matchingProduct = this.products.find(product => product.getName() === purchase.name && (product.getName() != ''));
-            const remainingQuantity = matchingProduct.getQuantity() - purchase.quantity;
+            const matchingProduct = this.products.find(product => product.getName() === purchase.name && (product.getPromotion() == ''));
+            const remainingQuantity = matchingProduct.quantity - purchase.quantity;
 
-            matchingProduct.quantity = remainingQuantity;
+            matchingProduct.updateQuantity(remainingQuantity)
         });
     }
 
@@ -83,9 +83,14 @@ export default class InventoryControl {
     }
 
     updateInventory(purchaseList, promotionList) {
-        this.updatePromotionInventory(promotionList);
+        if (promotionList.length !== 0) {
+            this.updatePromotionInventory(promotionList);
+        }
         const nonPromotionList = this.getNonPromotionList(purchaseList, promotionList);
-        this.updateNonPromotionInventory(nonPromotionList)
+        if (nonPromotionList.length !== 0) {
+            this.updateNonPromotionInventory(nonPromotionList);
+        }
+
     }
 
     findMatchingInventory(productName) {

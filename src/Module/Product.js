@@ -30,4 +30,8 @@ export default class Product {
         }
         return this.promotion;
     }
+
+    updateQuantity(quantity) {
+        this.quantity = quantity;
+    }
 }
