@@ -82,9 +82,6 @@ const run = async ({
   const app = new App();
   await app.run();
 
-  // 비동기 처리를 위해 대기 시간 추가
-  await new Promise((resolve) => setTimeout(resolve, 100));
-
   const output = getOutput(logSpy);
   console.log(output);
   // then
