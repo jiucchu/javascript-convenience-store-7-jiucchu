@@ -54,7 +54,7 @@ export default class ApplyPromotion {
     getPromotionStatus(name) {
         const promotionList = this.checkPromotionList(name)
         if (promotionList.length === 0) {
-            return False
+            return false
         }
         const promotion = this.getThisPromotion(promotionList[0].getPromotion())[0];
         return this.checkPromotionDate(promotion)
@@ -176,6 +176,10 @@ export default class ApplyPromotion {
         });
 
         return totalApplyAmount;
+    }
+
+    getNotApplyPromotionList() {
+
     }
 
     findMatchingInventory(productName) {

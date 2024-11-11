@@ -12,8 +12,10 @@ export default class Membership {
     async checkMembership() {
         const answer = await InputUtils.InputMemershipApply();
         if (answer === 'y' | answer === 'Y') {
-            applyMembership()
+            return getMembershipDiscount()
         }
+
+        return 0
     }
 
     getMembershipDiscount() {

@@ -3,7 +3,7 @@ export const INPUT_MESSAGE = Object.freeze({
 })
 
 export const OUTPUT_MESSAGE = Object.freeze({
-    WELCOME_MESSAGE: '안녕하세요. W편의점입니다.\n현재 보유하고 있는 상품입니다.\n',
+    WELCOME_MESSAGE: '\n안녕하세요. W편의점입니다.\n현재 보유하고 있는 상품입니다.\n',
 })
 
 
@@ -28,6 +28,7 @@ export const INPUT_ERROR_MESSAGE = Object.freeze({
     MEMBERSHIP_DISCOUNT_ERROR: '[ERROR] Y 또는 N으로 입력해주세요.',
     ADDITIONAL_PURCHASE_ERROR: '[ERROR] Y 또는 N으로 입력해주세요.',
     MEMBERSHIP_APPLY: '[ERROR] Y 또는 N으로 입력해주세요.',
+    MORE_PURCHASE: '[ERROR] Y 또는 N으로 입력해주세요.',
 })
 
 export const CONSTANTS = Object.freeze({

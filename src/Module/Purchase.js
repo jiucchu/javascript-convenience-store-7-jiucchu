@@ -30,4 +30,14 @@ export default class Purchase {
         return totalAmount;
     }
 
+    getTotalpurchaseQuantity() {
+        let totalQuantity = 0;
+        const purchaseList = this.getUnitPurchaseList();
+        purchaseList.forEach(product => {
+            totalQuantity += product.quantity;
+        });
+
+        return totalQuantity;
+    }
+
 }

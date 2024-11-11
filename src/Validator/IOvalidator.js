@@ -62,5 +62,13 @@ export class InputValidator {
             throw new Error(INPUT_ERROR_MESSAGE.MEMBERSHIP_APPLY);
         }
     }
+    static validateInputMorePurchase(morePurchase) {
+        const answer = ['y', 'Y', 'n', 'N'];
+        if (!(answer.includes(morePurchase))) {
+            throw new Error(INPUT_ERROR_MESSAGE.MORE_PURCHASE);
+        }
+    }
+
+
 }
 

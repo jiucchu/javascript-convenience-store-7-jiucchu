@@ -57,14 +57,24 @@ export class InputUtils {
             const membershipApply = await Console.readLineAsync(`\n멤버십 할인을 받으시겠습니까? (Y/N)\n`);
             InputValidator.validateMembershipApply(membershipApply);
 
-            return purchaseMorePromotionProduct
+            return membershipApply
         } catch (error) {
             this.printErrorMessage(error.message);
             return this.InputMemershipApply();
         }
     }
 
+    static async inputMorePurchase() {
+        try {
+            const morePurchaseApply = await Console.readLineAsync(`\n감사합니다. 구매하고 싶은 다른 상품이 있나요? (Y/N)\n`);
+            InputValidator.validateInputMorePurchase(morePurchaseApply);
 
+            return morePurchaseApply
+        } catch (error) {
+            this.printErrorMessage(error.message);
+            return this.inputMorePurchase();
+        }
+    }
 
 
     static printErrorMessage(errorMessage) {
@@ -90,9 +100,53 @@ export class OutputUtils {
         const [name, price, quantity, promotion] = [product.getName(), product.getPrice(), product.getQuantity(), product.getPromotion()];
 
         if (product.getQuantity() == '0') {
-            return `- ${name}, ${price.toLocaleString()}원 재고 없음`
+            return `- ${name} ${price.toLocaleString()}원 재고 없음`
         }
 
-        return `- ${name}, ${price.toLocaleString()}원 ${quantity}개 ${promotion}`
+        return `- ${name} ${price.toLocaleString()}원 ${quantity}개 ${promotion}`
+    }
+
+    static printReceipt(purchaseList, promotionList, totalAmount) {
+        Console.print('==============W 편의점================');
+        this.printPurcahseList(purchaseList);
+        this.printPromotionList(promotionList);
+        this.printDiscountList(totalAmounts);
+    }
+
+    static printPurcahseList(purchaseList) {
+        Console.print(formatLine("상품명", "수량", "금액"));
+        purchaseList.forEach(purchase => {
+            Console.print(formatLine(purchase.name, purchase.quantity, purchase.totalPrice.toLocaleString()));
+        })
+
+    }
+
+    static printPromotionList(promotionList) {
+        Console.print('=============증	    정===============');
+        promotionList.forEach(item => {
+            Console.print(formatLine(item.name, item.quantity));
+        });
+    }
+
+    static printDiscountList() {
+        Console.print("====================================");
+        Console.print(formatLine("총구매액", totalAmount.totalQuantity, totalAmount.totalPrice.toLocaleString()));
+        Console.print(formatLine("행사할인", "", `-${totalAmount.promotionDiscount.toLocaleString()}`));
+        Console.print(formatLine("멤버십할인", "", `-${totalAmount.membershipDiscount.toLocaleString()}`));
+        Console.print(formatLine("내실돈", "", totalAmount.finalAmount.toLocaleString()));
+        Console.print("====================================");
+    }
+
+
+    static formatLine(name, quantity = "", price = "") {
+        const nameWidth = 10;
+        const quantityWidth = 6;
+        const priceWidth = 10;
+
+        return (
+            name.padEnd(nameWidth) +
+            quantity.toString().padStart(quantityWidth) +
+            price.toString().padStart(priceWidth)
+        );
     }
 }
