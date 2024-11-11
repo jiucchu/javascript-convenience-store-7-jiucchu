@@ -38,7 +38,17 @@ export default class InventoryControl {
         OutputUtils.printWelcome();
         this.products.forEach(product => {
             OutputUtils.printInventory(product);
+            if (product.getPromotion() !== '' && !this.hasNonPromotionProduct(product.getName())) {
+                OutputUtils.printInventory(new Product(product.getName(), product.getPrice(), 0, 'null'));
+            }
         });
+    }
+
+    hasNonPromotionProduct(productName) {
+        return this.products.some(product =>
+            product.getName() === productName &&
+            product.getPromotion() === ''
+        );
     }
 
     updatePromotionInventory(purchaseList) {
