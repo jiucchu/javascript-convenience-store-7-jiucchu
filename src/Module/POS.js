@@ -9,7 +9,7 @@ export default class POS {
         this.inventory = inventory;
         this.purchaseList = [];
         this.promotionList = [];
-        this.totalAmounts = { totalQuantity: 0, totalPrice: 0, promotionDiscount: 0, membershipDiscount: 0, finalAmount: 0 }
+        this.totalAmounts = { totalQuantity: 0, totalPrice: 0, promotionDiscount: 0, membershipDiscount: 0, finalAmount: 0, totalPromotionApply: 0 }
     }
 
     async run() {
@@ -55,6 +55,7 @@ export default class POS {
         this.purchaseList = applyPromotion.getPurchaseList();
         this.totalAmounts.promotionDiscount = applyPromotion.getPromotionAmount();
         this.promotionList = applyPromotion.getPromotionApplyList();
+        this.totalAmounts.totalPromotionApply = applyPromotion.getTotalPromotionAmount();
 
         return applyPromotion.getPromotionApplyList();
     }
@@ -68,7 +69,7 @@ export default class POS {
     }
 
     async applyMembership() {
-        const membership = new Membership(this.totalAmounts.totalPrice, this.totalAmounts.promotionDiscount);
+        const membership = new Membership(this.totalAmounts.totalPrice, this.totalAmounts.totalPromotionApply);
 
         this.totalAmounts.membershipDiscount = await membership.checkMembership();
     }
