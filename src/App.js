@@ -13,7 +13,7 @@ class App {
     const inventory = new InventoryControl();
     const pos = new POS(inventory);
 
-    pos.run();
+    await pos.run();
 
   }
 }
