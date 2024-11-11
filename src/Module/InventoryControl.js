@@ -3,6 +3,7 @@ import { OutputUtils } from '../Utils/ioUtils.js';
 import { Console } from '@woowacourse/mission-utils';
 
 import fs from 'fs';
+import Purchase from './Purchase.js';
 
 
 export default class InventoryControl {
@@ -39,4 +40,46 @@ export default class InventoryControl {
             OutputUtils.printInventory(product);
         });
     }
+
+    updatePromotionInventory(purchaseList) {
+        purchaseList.forEach(purchase => {
+            const matchingProduct = this.products.find(product => product.name === purchase.name && (purchase.promotion != 'null'));
+            const remainingQuantity = matchingProduct.quantity - purchase.quantity;
+
+            matchingProduct.quantity = remainingQuantity;
+        });
+    }
+
+    updateNonPromotionInventory(purchaseList) {
+        purchaseList.forEach(purchase => {
+            const matchingProduct = this.products.find(product => (product.name === purchase.name) && product.promotion == 'null');
+            const remainingQuantity = matchingProduct.quantity - purchase.quantity;
+
+            matchingProduct.quantity = remainingQuantity;
+        });
+    }
+
+    getNonPromotionList(purchaseList, promotionList) {
+        return purchaseList.map(purchase => {
+            const promotionItem = promotionList.find(promo => (promo.name === purchase.name));
+            if (promotionItem) {
+                return {
+                    name: purchase.name,
+                    quantity: purchase.quantity - promotionItem.quantity
+                };
+            }
+            return purchase;
+        }).filter(item => item.quantity > 0);
+    }
+
+    updateInventory(purchaseList, promotionList) {
+        this.updatePromotionInventory(promotionList);
+        const nonPromotionList = this.getNonPromotionList(purchaseList, promotionList);
+        this.updateNonPromotionInventory(nonPromotionList)
+    }
+
+    findMatchingInventory(productName) {
+        return this.inventoryList.find(product => product.name === productName);
+    }
+
 }

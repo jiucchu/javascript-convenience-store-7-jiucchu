@@ -26,10 +26,9 @@ export default class POS {
         const totalPurcahseAmount = purchase.getTotalPurchaseAmount();
 
         let discountedAmount = totalPurcahseAmount - applyPromotion.getTotalPromotionAmount();
-        const membership = new Membership(discountedAmount);
+        const membership = new Membership(totalPurcahseAmount, discountedAmount);
 
-        this.inventory.updateInventory(this.purchaseList);
-
+        this.inventory.updateInventory(this.purchaseList, promotionApplyProducst);
 
     }
 
